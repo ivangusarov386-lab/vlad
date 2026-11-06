@@ -109,7 +109,7 @@ h1{color:#f5f8fe;letter-spacing:-.065em}.hero h1 em{color:#9ac3f7;text-shadow:0 
 .btn-dark{background:linear-gradient(120deg,#8db9ed,#b0d0f3);color:#102640;box-shadow:0 8px 34px #6aafe03d}
 .btn-dark:hover{background:linear-gradient(120deg,#b3d4f9,#d4e7ff);color:#0c1b2e;box-shadow:0 10px 48px #79b9ef4d}
 /* Keep the hero accent colors; soften only the call-to-action halo. */
-.hero-buttons .btn-dark{position:relative;box-shadow:0 6px 24px #6aafe01c}
+.hero-buttons .btn-dark{box-shadow:0 6px 24px #6aafe01c}
 .hero-buttons .btn-dark:hover{box-shadow:0 8px 30px #79b9ef26}
 .btn-outline{background:#ffffff08;border:1px solid #7697bd66;color:#e9f3ff;backdrop-filter:blur(8px)}
 .btn-outline:hover{background:#a3c3ee1c;border-color:#a6ccf1a3}
@@ -221,10 +221,7 @@ h1{color:#f5f8fe;letter-spacing:-.065em}.hero h1 em{color:#9ac3f7;text-shadow:0 
     }
   }
 }
-/* A distinct travelling glint stays visible against the light trial button. */
-.trial-outline{position:absolute;inset:-1px;width:calc(100% + 2px);height:calc(100% + 2px);overflow:visible;pointer-events:none}
-.trial-outline rect{width:calc(100% - 4px);height:calc(100% - 4px);fill:none;stroke-width:2;vector-effect:non-scaling-stroke}
-.trial-outline-track{stroke:#426b9a;opacity:.55}
-.trial-outline-glint{stroke:#fff;stroke-width:3!important;stroke-linecap:round;stroke-dasharray:18 82;filter:drop-shadow(0 0 2px #e2f3ff);opacity:0}
-@keyframes trialOutlineTravel{to{stroke-dashoffset:-100}}
-@media(prefers-reduced-motion:no-preference){.trial-outline-glint{opacity:1;animation:trialOutlineTravel 4s linear infinite}}
+/* Broad, soft blue tones flow through the fill; no moving outline. */
+.hero-buttons .btn-dark{background:linear-gradient(110deg,#8db9ed 0%,#a8caf0 35%,#b0d0f3 50%,#a8caf0 65%,#8db9ed 100%);background-size:220% 100%;background-position:50% 50%}
+@keyframes trialFillFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@media(prefers-reduced-motion:no-preference){.hero-buttons .btn-dark{animation:trialFillFlow 7s ease-in-out infinite}}

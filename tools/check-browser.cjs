@@ -90,18 +90,18 @@ const server = http.createServer((req, res) => {
     await p.goto(origin+base);
     const trial = p.locator('.hero-buttons .btn-dark');
     await trial.scrollIntoViewIfNeeded();
-    const glint = trial.locator('.trial-outline-glint');
-    const sampleGlint = time => glint.evaluate((e,time) => {
-      const a = e.getAnimations().find(a=>a.animationName==='trialOutlineTravel');
-      if (!a) throw Error('Trial outline animation missing');
+    assert.equal(await trial.locator('svg').count(),0);
+    assert.equal(await trial.evaluate(e=>getComputedStyle(e,'::after').content),'none');
+    const sampleFill = time => trial.evaluate((e,time) => {
+      const a = e.getAnimations().find(a=>a.animationName==='trialFillFlow');
+      if (!a) throw Error('Trial fill animation missing');
       a.pause();a.currentTime=time;
-      if(e.getBBox().width<=0 || e.getBBox().height<=0) throw Error('SVG contour has no dimensions');
     },time);
-    await sampleGlint(0);
+    await sampleFill(0);
     const firstFrame = await trial.screenshot();
-    await sampleGlint(1000);
-    const secondFrame = await trial.screenshot({path:'/tmp/flowpass-trial-outline.png'});
-    assert(!firstFrame.equals(secondFrame),'Trial contour pixels do not move');
+    await sampleFill(3500);
+    const secondFrame = await trial.screenshot({path:'/tmp/flowpass-trial-fill.png'});
+    assert(!firstFrame.equals(secondFrame),'Trial fill does not change');
     assert.equal(await trial.getAttribute('href'),'https://lk.flowpass.online/login');
     assert(await trial.evaluate(e=>{const r=e.getBoundingClientRect();return document.elementFromPoint(r.x+r.width/2,r.y+r.height/2).closest('a')===e;}));
     await p.locator('[data-device="android"]').click();
@@ -119,7 +119,7 @@ const server = http.createServer((req, res) => {
     await p.screenshot({path:'/tmp/flowpass-demo1-routing.png'});
     await p.emulateMedia({reducedMotion:'reduce'});
     await p.goto(origin+base);
-    assert.equal(await p.locator('.trial-outline-glint').first().evaluate(e=>getComputedStyle(e).animationName),'none');
+    assert.equal(await p.locator('.hero-buttons .btn-dark').first().evaluate(e=>getComputedStyle(e).animationName),'none');
     assert(!await p.locator('.price-card.featured').evaluate(e=>e.getAnimations({subtree:true}).some(a=>a.animationName.startsWith('annualPlan'))));
     await p.setViewportSize({width:1200,height:630});
     await p.goto(origin+base);
