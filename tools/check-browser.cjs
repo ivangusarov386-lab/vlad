@@ -66,7 +66,13 @@ const server = http.createServer((req, res) => {
               await page.locator(`[data-device="${device}"]`).click();
               assert.equal(await page.locator(`[data-device="${device}"]`).getAttribute('aria-selected'),'true');
               assert.equal(await page.locator('#steps-list .step').count(),3);
-              assert.equal(await page.locator('#connect a[href$="vpn/android/"]').count(),1);
+              const guide = page.locator('#steps-list .step').nth(2).locator('.step-guide');
+              if (device === 'iphone' || device === 'android') {
+                assert.equal(await guide.count(),1);
+                assert.equal(await guide.getAttribute('href'),base+`vpn/${device}/`);
+                assert((await guide.innerText()).includes(device === 'iphone' ? 'iPhone' : 'Android'));
+              } else assert.equal(await guide.count(),0);
+              assert.equal(await page.locator('#connect .sectionlead .guide-links').count(),0);
             }
             assert.equal(await page.locator('.price-card').count(),4);
           }
@@ -82,6 +88,24 @@ const server = http.createServer((req, res) => {
     const p = await browser.newPage({viewport:{width:390,height:844}});
     await p.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
     await p.goto(origin+base);
+    const trial = p.locator('.hero-buttons .btn-dark');
+    await trial.scrollIntoViewIfNeeded();
+    const glint = trial.locator('.trial-outline-glint');
+    const sampleGlint = time => glint.evaluate((e,time) => {
+      const a = e.getAnimations().find(a=>a.animationName==='trialOutlineTravel');
+      if (!a) throw Error('Trial outline animation missing');
+      a.pause();a.currentTime=time;
+      if(e.getBBox().width<=0 || e.getBBox().height<=0) throw Error('SVG contour has no dimensions');
+    },time);
+    await sampleGlint(0);
+    const firstFrame = await trial.screenshot();
+    await sampleGlint(1000);
+    const secondFrame = await trial.screenshot({path:'/tmp/flowpass-trial-outline.png'});
+    assert(!firstFrame.equals(secondFrame),'Trial contour pixels do not move');
+    assert.equal(await trial.getAttribute('href'),'https://lk.flowpass.online/login');
+    assert(await trial.evaluate(e=>{const r=e.getBoundingClientRect();return document.elementFromPoint(r.x+r.width/2,r.y+r.height/2).closest('a')===e;}));
+    await p.locator('[data-device="android"]').click();
+    await p.locator('#steps-list').screenshot({path:'/tmp/flowpass-android-steps.png'});
     const annual = p.locator('.price-card.featured');
     await annual.scrollIntoViewIfNeeded();
     await p.waitForTimeout(1200);
@@ -95,6 +119,7 @@ const server = http.createServer((req, res) => {
     await p.screenshot({path:'/tmp/flowpass-demo1-routing.png'});
     await p.emulateMedia({reducedMotion:'reduce'});
     await p.goto(origin+base);
+    assert.equal(await p.locator('.trial-outline-glint').first().evaluate(e=>getComputedStyle(e).animationName),'none');
     assert(!await p.locator('.price-card.featured').evaluate(e=>e.getAnimations({subtree:true}).some(a=>a.animationName.startsWith('annualPlan'))));
     await p.setViewportSize({width:1200,height:630});
     await p.goto(origin+base);

@@ -210,7 +210,7 @@ h1{color:#f5f8fe;letter-spacing:-.065em}.hero h1 em{color:#9ac3f7;text-shadow:0 
 @media(prefers-reduced-motion:no-preference){
   .price-card.featured{animation:annualPlanPulse 4s ease-in-out infinite}
   @supports ((mask-composite:exclude) or (-webkit-mask-composite:xor)){
-    .price-card.featured:after,.hero-buttons .btn-dark:after{
+    .price-card.featured:after{
       content:"";position:absolute;inset:-1px;padding:2px;border-radius:inherit;pointer-events:none;
       background:linear-gradient(120deg,#72a2d633 20%,#c5e7ff 35%,#8dbfff 43%,#72a2d633 60%);
       background-size:300% 300%;
@@ -221,3 +221,10 @@ h1{color:#f5f8fe;letter-spacing:-.065em}.hero h1 em{color:#9ac3f7;text-shadow:0 
     }
   }
 }
+/* A distinct travelling glint stays visible against the light trial button. */
+.trial-outline{position:absolute;inset:-1px;width:calc(100% + 2px);height:calc(100% + 2px);overflow:visible;pointer-events:none}
+.trial-outline rect{width:calc(100% - 4px);height:calc(100% - 4px);fill:none;stroke-width:2;vector-effect:non-scaling-stroke}
+.trial-outline-track{stroke:#426b9a;opacity:.55}
+.trial-outline-glint{stroke:#fff;stroke-width:3!important;stroke-linecap:round;stroke-dasharray:18 82;filter:drop-shadow(0 0 2px #e2f3ff);opacity:0}
+@keyframes trialOutlineTravel{to{stroke-dashoffset:-100}}
+@media(prefers-reduced-motion:no-preference){.trial-outline-glint{opacity:1;animation:trialOutlineTravel 4s linear infinite}}

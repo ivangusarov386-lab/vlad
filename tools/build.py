@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build the static site with Python's standard library; no runtime dependencies."""
 import argparse
+import hashlib
 import html
 import json
 import re
@@ -70,9 +71,20 @@ def build(target, destination, base_override=None):
         return '<script type="application/ld+json">' + json.dumps(data, ensure_ascii=False) + '</script>'
 
     def write(path, content):
+        if path.endswith('.html'):
+            def asset_version(match):
+                name = match[2]
+                digest = hashlib.sha256((ROOT / 'assets' / name).read_bytes()).hexdigest()[:12]
+                return match[1] + '?v=' + digest + '"'
+            content = re.sub(r'((?:href|src)="[^"]*assets/((?:site|seo)\.(?:css|js)))"', asset_version, content)
         out = destination / path
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(content)
+
+    def trial_outline(content):
+        outline = read('trial-outline.svg.in').strip()
+        return re.sub(r'(<a class="btn btn-dark"[^>]*>)(.*?)</a>',
+                      lambda m: m[1] + m[2] + outline + '</a>', content, flags=re.S)
 
     def social_tags():
         return (f'<meta property="og:image" content="{social_url}">'
@@ -85,7 +97,7 @@ def build(target, destination, base_override=None):
     home = read('home.html.in').replace('{{HEADER}}', header_home).replace('{{FOOTER}}', footer_home)
     home = common(home).replace('{{SCHEMA}}', schema(''))
     home = home.replace('</head>', f'<meta name="robots" content="{robots}">' + social_tags() + '</head>')
-    write('index.html', home)
+    write('index.html', trial_outline(home))
     for path, title, description, label in PAGES:
         body = read('pages/' + path.strip('/').replace('/', '-') + '.html.in')
         body = body.replace('{{DIAGRAM}}', read('diagram.html.in'))
@@ -104,7 +116,7 @@ def build(target, destination, base_override=None):
 <body><div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>{header_inner}
 <main id="top" class="seo-page"><div class="container"><nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="{base}">Главная</a><span aria-hidden="true">/</span><span aria-current="page">{label}</span></nav></div>
 {body}</main>{footer_inner}<script src="{base}assets/site.js" defer></script></body></html>'''
-        write(path + 'index.html', text)
+        write(path + 'index.html', trial_outline(text))
 
     # Do not publish an empty/invalid sitemap or list commercial URLs in a
     # different host's sitemap. Generate the sitemap only for production.
