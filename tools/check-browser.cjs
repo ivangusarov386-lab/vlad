@@ -68,17 +68,32 @@ const server = http.createServer((req, res) => {
             assert((await page.locator('#route-explain').innerText()).includes('Зарубежный'));
           }
           if (url === '') {
-            for (const device of ['iphone','android','windows','macos','tv']) {
-              await page.locator(`[data-device="${device}"]`).click();
-              assert.equal(await page.locator(`[data-device="${device}"]`).getAttribute('aria-selected'),'true');
-              assert.equal(await page.locator('#steps-list .step').count(),3);
-              const guide = page.locator('#steps-list .step').nth(2).locator('.step-guide');
-              if (device === 'iphone' || device === 'android') {
-                assert.equal(await guide.count(),1);
-                assert.equal(await guide.getAttribute('href'),base+`vpn/${device}/`);
-                assert((await guide.innerText()).includes(device === 'iphone' ? 'iPhone' : 'Android'));
-              } else assert.equal(await guide.count(),0);
-              assert.equal(await page.locator('#connect .sectionlead .guide-links').count(),0);
+            for (const width of [320,360,375,390,414,768,1024,1440]) {
+              await page.setViewportSize({width,height:900});
+              for (const device of ['iphone','android','windows','macos','tv']) {
+                await page.locator(`[data-device="${device}"]`).click();
+                assert.equal(await page.locator(`[data-device="${device}"]`).getAttribute('aria-selected'),'true');
+                assert.equal(await page.locator('#steps-list .step').count(),3);
+                const install = page.locator('#steps-list .step').nth(1);
+                const action = install.locator('.step-action');
+                assert.equal(await action.count(),1);
+                assert.equal((await action.innerText()).replace(/\s+/g,' '),'Перейти ↗');
+                const expected = device === 'iphone' ? 'https://apps.apple.com/app/happ-proxy-utility/id6504287215' : device === 'tv' ? 'https://t.me/Flowpass_helper_bot' : 'https://www.happ.su/';
+                assert.equal(await action.getAttribute('href'),expected);
+                assert(await action.evaluate(e=>{
+                  const label=document.createRange();label.selectNodeContents(e.firstChild);
+                  const text=label.getBoundingClientRect(),arrow=e.querySelector('span').getBoundingClientRect();
+                  return Math.abs((text.top+text.height/2)-(arrow.top+arrow.height/2))<3 && e.getBoundingClientRect().top>=e.previousElementSibling.getBoundingClientRect().bottom+4;
+                }),`Broken action layout: ${device} ${width}`);
+                assert(await page.locator('#steps-list .step').evaluateAll(es=>es.every(e=>e.scrollWidth<=e.clientWidth)),`Step overflow: ${device} ${width}`);
+                const guide = page.locator('#steps-list .step').nth(2).locator('.step-guide');
+                if (device === 'iphone' || device === 'android') {
+                  assert.equal(await guide.count(),1);
+                  assert.equal(await guide.getAttribute('href'),base+`vpn/${device}/`);
+                  assert((await guide.innerText()).includes(device === 'iphone' ? 'iPhone' : 'Android'));
+                } else assert.equal(await guide.count(),0);
+                assert.equal(await page.locator('#connect .sectionlead .guide-links').count(),0);
+              }
             }
             assert.equal(await page.locator('.price-card').count(),4);
           }

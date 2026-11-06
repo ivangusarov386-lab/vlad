@@ -3,6 +3,10 @@
 .guide-links a:hover,.article-link:hover{color:#e2efff;text-decoration-color:currentColor}
 .step .step-guide{display:inline-flex;align-items:center;gap:8px;margin-top:13px;padding:4px 0;font-size:12px;line-height:1.6;font-weight:700;color:#b5d2f0;text-decoration-color:#7496ba66}
 .step .step-guide:hover{color:#e2efff;text-decoration-color:currentColor}
+.step>div{min-width:0;flex:1}.step-num{flex:0 0 18px}
+.step .step-action{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;max-width:100%;margin-top:8px;padding:6px 0;font-size:12px;font-weight:700;line-height:1.5}
+.step .step-action span{flex-shrink:0}.step .step-guide{max-width:100%}.step .step-guide span{flex-shrink:0}
+@media(max-width:360px){.step{gap:12px}}
 .benefit .article-link{margin-top:18px;font-size:12px;position:relative;z-index:1}
 .breadcrumbs{display:flex;flex-wrap:wrap;gap:12px;padding-top:28px;font-size:12px;color:#9fb4cd;line-height:1.8}
 .breadcrumbs a{text-decoration:underline;text-underline-offset:4px}
