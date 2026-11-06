@@ -110,11 +110,14 @@ header,main,footer,.hero,.signal{position:relative;z-index:1}
 .menu{background:#1b2d42;border:1px solid #54718d;color:#f4f9ff}
 .intro-pill{background:#15283dd4;border:1px solid #6ea7e65e;color:#bcd8f7;box-shadow:0 0 36px #3c87cb13}
 .intro-pill:before{background:#9bc6f7;box-shadow:0 0 0 4px #6fa9ec21,0 0 14px #65b1ff85}
-h1{color:#f5f8fe;letter-spacing:-.065em}.hero h1 em{color:#9ac3f7;text-shadow:0 0 55px #4487c544}
+h1{color:#f5f8fe;letter-spacing:-.065em}.hero h1 em{color:#9ac3f7;text-shadow:0 0 36px #4487c51f}
 .hero-lead,.hero-meta{color:#adc1d9}.hero-meta span:before{color:#8db8e8}
 .btn{transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s,background .3s}
 .btn-dark{background:linear-gradient(120deg,#8db9ed,#b0d0f3);color:#102640;box-shadow:0 8px 34px #6aafe03d}
 .btn-dark:hover{background:linear-gradient(120deg,#b3d4f9,#d4e7ff);color:#0c1b2e;box-shadow:0 10px 48px #79b9ef4d}
+/* Keep the hero accent colors; soften only the call-to-action halo. */
+.hero-buttons .btn-dark{box-shadow:0 6px 24px #6aafe01c}
+.hero-buttons .btn-dark:hover{box-shadow:0 8px 30px #79b9ef26}
 .btn-outline{background:#ffffff08;border:1px solid #7697bd66;color:#e9f3ff;backdrop-filter:blur(8px)}
 .btn-outline:hover{background:#a3c3ee1c;border-color:#a6ccf1a3}
 .btn-light{background:#c3daf6;color:#152b44}
