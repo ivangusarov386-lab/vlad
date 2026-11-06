@@ -1,0 +1,26 @@
+.guide-links{display:flex;flex-wrap:wrap;gap:12px 22px;margin-top:22px;font-size:13px;line-height:1.6}
+.guide-links a,.article-link{color:#b2cdec;text-decoration:underline;text-decoration-color:#7496ba66;text-underline-offset:5px}
+.guide-links a:hover,.article-link:hover{color:#e2efff;text-decoration-color:currentColor}
+.benefit .article-link{margin-top:18px;font-size:12px;position:relative;z-index:1}
+.breadcrumbs{display:flex;flex-wrap:wrap;gap:12px;padding-top:28px;font-size:12px;color:#9fb4cd;line-height:1.8}
+.breadcrumbs a{text-decoration:underline;text-underline-offset:4px}
+.seo-hero{padding:65px 0 75px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 85% 45%,#204b7730,transparent 65%)}
+.seo-hero:before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(#a8ccff06 1px,transparent 1px),linear-gradient(90deg,#a8ccff06 1px,transparent 1px);background-size:64px 64px}
+.seo-hero>.container{position:relative}.seo-hero h1{font-size:clamp(38px,5.5vw,70px);max-width:950px;margin-top:20px}
+.seo-hero .hero-lead{max-width:740px}.seo-hero .hero-buttons{margin-top:28px}
+.seo-section{padding-top:65px;padding-bottom:65px}.seo-section h2{max-width:850px}
+.seo-section p,.seo-section li{color:#afc1d7;font-size:15px;line-height:1.85}
+.seo-section a:not(.btn){text-decoration:underline;text-underline-offset:4px;color:#b9d7f7}
+.seo-section .benefit p{font-size:13px}.seo-section .benefit h3{margin-top:24px}
+.seo-steps{list-style:none;counter-reset:setup;display:grid;gap:16px;padding:0;margin:32px 0}
+.seo-steps>li{counter-increment:setup;padding:25px 28px;border:1px solid #658bb044;border-radius:18px;background:linear-gradient(145deg,#182a3e,#111e2f)}
+.seo-steps h3:before{content:counter(setup,decimal-leading-zero) " / ";color:#8eb9e9;font-size:13px;letter-spacing:.08em}
+.seo-steps p:last-child{margin-bottom:0}.seo-steps h3{color:#eaf3ff;margin-bottom:10px}
+.seo-note{padding:20px 24px;border-left:2px solid #7ca5ce;background:#13263a;border-radius:0 14px 14px 0}
+.seo-related{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:25px}
+.seo-related a{display:block;border:1px solid #658bb044;border-radius:14px;padding:22px;background:#14263a;font-size:14px;font-weight:700;line-height:1.7}
+.seo-page .route-scene{max-width:550px;margin:35px auto 55px}.seo-page .route-card{max-width:465px}
+.seo-page .faq-grid{gap:7%}.seo-page .faqitem button{font-size:15px}.seo-page .faqanswer{font-size:14px}
+@media(min-width:1000px){.navin{gap:20px}.navlinks{gap:20px}}
+@media(min-width:761px) and (max-width:1050px){.navright{margin-left:auto}.navright .btn{display:none}.menu{display:flex}.navlinks{display:none;position:absolute;top:82px;left:0;right:0;margin:0;padding:18px 23px;flex-direction:column;gap:19px;background:#101e30;border-bottom:1px solid #6f91b636;box-shadow:0 15px 40px #0008}.navlinks.open{display:flex}}
+@media(max-width:760px){.seo-hero{padding:42px 0 50px}.seo-section{padding-top:42px;padding-bottom:42px}.seo-steps>li{padding:21px 18px}.seo-related{grid-template-columns:1fr}.seo-section p,.seo-section li{font-size:14px}.breadcrumbs{font-size:11px}.seo-hero .hero-buttons .btn{width:100%}.guide-links{font-size:12px}.seo-page .route-scene{margin-bottom:45px}}

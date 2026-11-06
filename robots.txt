@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+# Demo: indexing policy is in each HTML robots meta tag.
+# GitHub Pages project robots.txt cannot control the host root.
