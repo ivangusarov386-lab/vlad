@@ -1,8 +1,8 @@
 /* Generated for this deployment. Only public, explicitly listed site files are cached. */
 const CACHE_PREFIX = "flowpass-c6949393-";
-const CACHE_NAME = "flowpass-c6949393-0953b903800d3cf8";
+const CACHE_NAME = "flowpass-c6949393-7ca65fdb72c337cb";
 const BASE = "/vlad/";
-const PRECACHE = ["/vlad/", "/vlad/vpn/iphone/", "/vlad/vpn/android/", "/vlad/smart-routing/", "/vlad/favicon.svg", "/vlad/manifest.webmanifest", "/vlad/offline.html", "/vlad/assets/icons/icon-192.png", "/vlad/assets/icons/icon-512.png", "/vlad/assets/icons/maskable-512.png", "/vlad/assets/icons/apple-touch-icon.png", "/vlad/assets/site.css?v=0a3135edefc5", "/vlad/assets/seo.css?v=659fb226c070", "/vlad/assets/pwa.css?v=f11a0b5beb15", "/vlad/assets/site.js?v=4292654c3fdf", "/vlad/assets/pwa.js?v=f8d155fa6c8e"];
+const PRECACHE = ["/vlad/", "/vlad/vpn/iphone/", "/vlad/vpn/android/", "/vlad/smart-routing/", "/vlad/favicon.svg", "/vlad/manifest.webmanifest", "/vlad/offline.html", "/vlad/assets/icons/icon-192.png", "/vlad/assets/icons/icon-512.png", "/vlad/assets/icons/maskable-512.png", "/vlad/assets/icons/apple-touch-icon.png", "/vlad/assets/site.css?v=0a3135edefc5", "/vlad/assets/seo.css?v=cbbc16394cb4", "/vlad/assets/pwa.css?v=f11a0b5beb15", "/vlad/assets/site.js?v=4292654c3fdf", "/vlad/assets/pwa.js?v=f8d155fa6c8e"];
 const PAGES = new Set(["/vlad/", "/vlad/vpn/iphone/", "/vlad/vpn/android/", "/vlad/smart-routing/"]);
 const ASSETS = new Set(PRECACHE.filter(path => !PAGES.has(path)));
 
