@@ -6,7 +6,7 @@ const path = require('path');
 const assert = require('node:assert/strict');
 const root = path.resolve(process.env.SITE_ROOT || path.join(__dirname, '..'));
 const base = process.env.SITE_BASE || '/vlad/';
-const types = {'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.svg':'image/svg+xml','.png':'image/png'};
+const types = {'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.svg':'image/svg+xml','.png':'image/png','.webmanifest':'application/manifest+json'};
 const server = http.createServer((req, res) => {
   const u = new URL(req.url, 'http://localhost');
   if (!u.pathname.startsWith(base)) {res.writeHead(404).end();return;}

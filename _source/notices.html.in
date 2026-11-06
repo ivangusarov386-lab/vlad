@@ -1,0 +1,4 @@
+<div class="pwa-notices" aria-label="Состояние приложения">
+  <div class="pwa-notice pwa-offline" role="status" hidden>Нет сети. Сохранённые страницы и инструкции доступны; для кабинета и подключения нужен интернет.</div>
+  <div class="pwa-notice pwa-update" role="status" hidden><span>Доступна новая версия Flowpass.</span><button class="btn btn-light" type="button">Обновить</button></div>
+</div>

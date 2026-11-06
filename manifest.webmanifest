@@ -1,0 +1,42 @@
+{
+  "id": "/vlad/",
+  "name": "Flowpass",
+  "short_name": "Flowpass",
+  "lang": "ru",
+  "description": "Flowpass: тарифы, настройка Happ и инструкции подключения.",
+  "start_url": "/vlad/",
+  "scope": "/vlad/",
+  "display": "standalone",
+  "background_color": "#090f1a",
+  "theme_color": "#090f1a",
+  "icons": [
+    {
+      "src": "/vlad/assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/vlad/assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/vlad/assets/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Подключить устройство",
+      "url": "/vlad/#connect"
+    },
+    {
+      "name": "Тарифы",
+      "url": "/vlad/#tariffs"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+:root{--app-header-height:83px}
+body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--app-header-height) + env(safe-area-inset-top,0px) + 12px)}
+.navbar{height:calc(var(--app-header-height) + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px)}
+.footer{padding-bottom:calc(25px + env(safe-area-inset-bottom,0px))}
+.pwa-panel{margin-top:32px;padding:26px;border:1px solid #658bb044;border-radius:18px;background:#13243a}
+.pwa-panel h2{font-size:24px;letter-spacing:-.04em;margin:0 0 10px}
+.pwa-panel p{font-size:13px;color:#aebfd3;max-width:760px;line-height:1.8;margin-bottom:14px}
+.pwa-panel .pwa-install{min-height:44px;margin:3px 0 16px}
+.pwa-install[hidden],.pwa-install-status[hidden],.pwa-notice[hidden]{display:none}
+.pwa-help{font-size:13px;line-height:1.7;color:#b8d1ee}
+.pwa-help summary{cursor:pointer;min-height:44px;padding:10px 0}
+.pwa-help[open]>div{padding-top:8px}.pwa-help p:last-child{margin-bottom:0}
+.pwa-panel .pwa-install-status{margin:12px 0 0;color:#c2d8ef}
+.pwa-notices{position:fixed;z-index:150;bottom:calc(14px + env(safe-area-inset-bottom,0px));left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));display:grid;justify-items:center;gap:8px;pointer-events:none}
+.pwa-notice{pointer-events:auto;max-width:620px;padding:14px 18px;border:1px solid #6382a2;border-radius:14px;background:#15283df7;color:#d8e6f7;box-shadow:0 8px 28px #0005;font-size:12px;line-height:1.7}
+.pwa-update{display:flex;gap:18px;align-items:center;justify-content:space-between}.pwa-update .btn{min-height:44px;padding:10px 15px;font-size:12px}
+@media(max-width:1050px){.navlinks{top:calc(var(--app-header-height) + env(safe-area-inset-top,0px) - 1px);max-height:calc(100vh - var(--app-header-height) - env(safe-area-inset-top,0px));max-height:calc(100dvh - var(--app-header-height) - env(safe-area-inset-top,0px));overflow-y:auto;overscroll-behavior:contain}.navlinks a{display:flex;align-items:center;min-height:44px}}
+@media(max-width:760px){:root{--app-header-height:75px}.device-tab{min-height:44px}.menu{width:44px;height:44px}.pwa-panel{padding:22px 18px}.pwa-panel h2{font-size:22px}.pwa-update{gap:12px}}
+@media(display-mode:standalone){.pwa-panel{margin-top:24px}}

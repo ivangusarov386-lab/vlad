@@ -45,10 +45,12 @@ def build(target, destination, base_override=None):
             fragment = re.sub(r'href="#([^"]+)"', r'href="{{BASE}}#\1"', fragment)
         return fragment.replace('{{BASE}}', base)
 
-    header_home = common(read('header.html.in'))
-    footer_home = common(read('footer.html.in'))
-    header_inner = common(read('header.html.in'), True)
-    footer_inner = common(read('footer.html.in'), True)
+    header = read('header.html.in').replace('</nav>', '<a href="{{BASE}}#install">Установить</a></nav>')
+    footer = read('footer.html.in').replace('<div class="copyright">', read('install.html.in') + '<div class="copyright">')
+    header_home = common(header)
+    footer_home = common(footer)
+    header_inner = common(header, True)
+    footer_inner = common(footer, True)
     social_url = origin + base + 'assets/flowpass-social.png'
 
     def schema(path, title=None):
@@ -72,11 +74,21 @@ def build(target, destination, base_override=None):
 
     def write(path, content):
         if path.endswith('.html'):
+            content = content.replace('</head>',
+                f'<link rel="manifest" href="{base}manifest.webmanifest">'
+                f'<link rel="apple-touch-icon" sizes="180x180" href="{base}assets/icons/apple-touch-icon.png">'
+                '<meta name="mobile-web-app-capable" content="yes">'
+                '<meta name="apple-mobile-web-app-capable" content="yes">'
+                '<meta name="apple-mobile-web-app-title" content="Flowpass">'
+                '<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">'
+                f'<link rel="stylesheet" href="{base}assets/pwa.css"></head>')
+            if path != '404.html':
+                content = content.replace('</body>', read('notices.html.in') + f'<script src="{base}assets/pwa.js" defer></script></body>')
             def asset_version(match):
                 name = match[2]
                 digest = hashlib.sha256((ROOT / 'assets' / name).read_bytes()).hexdigest()[:12]
                 return match[1] + '?v=' + digest + '"'
-            content = re.sub(r'((?:href|src)="[^"]*assets/((?:site|seo)\.(?:css|js)))"', asset_version, content)
+            content = re.sub(r'((?:href|src)="[^"]*assets/((?:site|seo|pwa)\.(?:css|js)))"', asset_version, content)
         out = destination / path
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(content)
@@ -131,6 +143,21 @@ def build(target, destination, base_override=None):
         robot_text += '# GitHub Pages project robots.txt cannot control the host root.\n'
     write('robots.txt', robot_text)
     write('404.html', f'<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex, follow"><title>Страница не найдена — Flowpass</title><link rel="stylesheet" href="{base}assets/site.css"><link rel="stylesheet" href="{base}assets/seo.css"></head><body><main class="container seo-section"><h1>Страница не найдена</h1><p>Проверьте адрес или вернитесь к подключению Flowpass.</p><a class="btn btn-light" href="{base}">На главную</a></main></body></html>')
+    write('offline.html', f'<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090f1a"><meta name="robots" content="noindex, follow"><title>Нет подключения — Flowpass</title><link rel="stylesheet" href="{base}assets/site.css"><link rel="stylesheet" href="{base}assets/seo.css"></head><body><div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>{header_inner}<main class="container seo-section" id="top"><div class="eyebrow">Flowpass / Офлайн</div><h1>Эта страница пока недоступна.</h1><p>Нет подключения к интернету. Откройте сохранённую главную, инструкции или объяснение маршрутов.</p><div class="seo-related"><a href="{base}">Главная и тарифы</a><a href="{base}vpn/iphone/">Инструкция для iPhone</a><a href="{base}vpn/android/">Инструкция для Android</a><a href="{base}smart-routing/">Умная маршрутизация</a></div><p class="seo-note">Для входа в кабинет, оформления подписки и подключения VPN через Happ нужен интернет.</p></main>{footer_inner}<script src="{base}assets/site.js" defer></script></body></html>')
+    icons = [
+        {'src': base + 'assets/icons/icon-192.png', 'sizes': '192x192', 'type': 'image/png', 'purpose': 'any'},
+        {'src': base + 'assets/icons/icon-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'any'},
+        {'src': base + 'assets/icons/maskable-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'maskable'},
+    ]
+    manifest = {'id': base, 'name': 'Flowpass', 'short_name': 'Flowpass', 'lang': 'ru',
+                'description': 'Flowpass: тарифы, настройка Happ и инструкции подключения.',
+                'start_url': base, 'scope': base, 'display': 'standalone',
+                'background_color': '#090f1a', 'theme_color': '#090f1a',
+                'icons': icons, 'shortcuts': [
+                    {'name': 'Подключить устройство', 'url': base + '#connect'},
+                    {'name': 'Тарифы', 'url': base + '#tariffs'},
+                ]}
+    write('manifest.webmanifest', json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
     if destination != ROOT:
         for name in ['assets', 'favicon.svg']:
             src, dst = ROOT / name, destination / name
@@ -138,6 +165,31 @@ def build(target, destination, base_override=None):
                 shutil.copytree(src, dst, dirs_exist_ok=True)
             else:
                 shutil.copy2(src, dst)
+    # A release fingerprint covers HTML and all local resources saved for offline
+    # use. Content edits therefore update the worker even if its logic is unchanged.
+    page_urls = [base] + [base + path for path, *_ in PAGES]
+    local_files = ['favicon.svg', 'manifest.webmanifest', 'offline.html'] + [i['src'][len(base):] for i in icons] + ['assets/icons/apple-touch-icon.png']
+    precache = page_urls + [base + name for name in local_files]
+    for page in ['index.html', 'offline.html'] + [path + 'index.html' for path, *_ in PAGES]:
+        for url in re.findall(r'(?:href|src)="([^"]+)"', (destination / page).read_text()):
+            if url.startswith(base + 'assets/') and re.search(r'\.(?:css|js)\?', url):
+                precache.append(url)
+    precache = list(dict.fromkeys(precache))
+    fingerprint = hashlib.sha256()
+    for url in precache:
+        relative = urlparse(url).path[len(base):]
+        file = destination / relative
+        if file.is_dir():
+            file /= 'index.html'
+        fingerprint.update(url.encode())
+        fingerprint.update(file.read_bytes())
+    fingerprint.update(read('sw.js.in').encode())
+    prefix = 'flowpass-' + hashlib.sha256(base.encode()).hexdigest()[:8] + '-'
+    worker = read('sw.js.in')
+    for key, value in {'__CACHE_PREFIX__': prefix, '__CACHE_NAME__': prefix + fingerprint.hexdigest()[:16],
+                       '__BASE__': base, '__PRECACHE__': precache, '__PAGES__': page_urls}.items():
+        worker = worker.replace(key, json.dumps(value, ensure_ascii=False))
+    write('sw.js', worker)
     print(f'Built {target}: {destination}; BASE_URL={base}; robots={robots}')
 
 

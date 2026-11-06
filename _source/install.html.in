@@ -1,0 +1,10 @@
+<section class="pwa-panel" id="install" aria-labelledby="pwa-title">
+  <div><h2 id="pwa-title">Flowpass на главном экране</h2><p>Установите сайт как приложение: тарифы и инструкции будут под рукой, в том числе без интернета. Для входа в кабинет и подключения VPN через Happ нужна сеть.</p></div>
+  <button class="btn btn-outline pwa-install" type="button" hidden>Установить Flowpass <span aria-hidden="true">↓</span></button>
+  <details class="pwa-help"><summary>Как установить на телефон или компьютер</summary><div>
+    <p><strong>iPhone и iPad:</strong> откройте сайт в Safari, нажмите «Поделиться» → «На экран Домой» → «Добавить». Если открыли сайт внутри другого приложения, сначала перейдите в Safari.</p>
+    <p><strong>Android:</strong> откройте сайт в Chrome и выберите в меню «Установить приложение» или «Добавить на главный экран».</p>
+    <p><strong>Компьютер:</strong> в Chrome или Edge используйте значок установки в адресной строке либо пункт установки приложения в меню браузера.</p>
+  </div></details>
+  <p class="pwa-install-status" role="status" hidden></p>
+</section>
