@@ -101,7 +101,8 @@ header,main,footer,.hero,.signal{position:relative;z-index:1}
 .logo{color:#f3f7ff}.logomark{background:linear-gradient(145deg,#2b6dae,#173654);border:1px solid #9bc8ff45;box-shadow:0 0 24px #2c7cc93a}
 .logo .period{color:#82baff}.navlinks{color:#bed0e7}.navlinks a:hover{color:#e7f3ff}.navright .btn-dark{color:#eaf3ff}
 .menu{background:#1b2d42;border:1px solid #54718d;color:#f4f9ff}
-.intro-pill{background:#15283dd4;border:1px solid #6ea7e65e;color:#bcd8f7;box-shadow:0 0 36px #3c87cb13}
+.intro-pill{max-width:100%;line-height:1.6;background:#15283dd4;border:1px solid #6ea7e65e;color:#bcd8f7;box-shadow:0 0 36px #3c87cb13}
+.intro-pill:before{flex-shrink:0}.intro-pill-copy{min-width:0}.intro-pill-price{white-space:nowrap}
 .intro-pill:before{background:#9bc6f7;box-shadow:0 0 0 4px #6fa9ec21,0 0 14px #65b1ff85}
 h1{color:#f5f8fe;letter-spacing:-.065em}.hero h1 em{color:#9ac3f7;text-shadow:0 0 36px #4487c51f}
 .hero-lead,.hero-meta{color:#adc1d9}.hero-meta span:before{color:#8db8e8}
