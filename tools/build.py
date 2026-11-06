@@ -36,6 +36,12 @@ def build(target, destination, base_override=None):
     canonical_origin = CONFIG['production_origin']
     noindex = target == 'demo' and CONFIG['demo_noindex']
     robots = 'noindex, follow' if noindex else 'index, follow'
+    trial_url = CONFIG['trial_url']
+    checkout_urls = CONFIG['checkout_urls']
+    for url in [trial_url] + [checkout_urls[str(days)] for days in [30,90,180,365]]:
+        parsed = urlparse(url)
+        if parsed.scheme != 'https' or not parsed.netloc or parsed.username or parsed.password:
+            raise ValueError('Trial and checkout URLs must be public HTTPS links without embedded credentials')
 
     def read(name):
         return (SOURCE / name).read_text()
@@ -43,7 +49,10 @@ def build(target, destination, base_override=None):
     def common(fragment, internal=False):
         if internal:
             fragment = re.sub(r'href="#([^"]+)"', r'href="{{BASE}}#\1"', fragment)
-        return fragment.replace('{{BASE}}', base)
+        fragment = fragment.replace('{{BASE}}', base).replace('{{TRIAL_URL}}', html.escape(trial_url, quote=True))
+        for days, url in checkout_urls.items():
+            fragment = fragment.replace('{{CHECKOUT_' + days + '}}', html.escape(url, quote=True))
+        return fragment
 
     header = read('header.html.in').replace('</nav>', '<a href="{{BASE}}#install">Установить</a></nav>')
     footer = read('footer.html.in').replace('<div class="copyright">', read('install.html.in') + '<div class="copyright">')
@@ -61,7 +70,7 @@ def build(target, destination, base_override=None):
             'serviceType': 'VPN-подписка', 'url': canonical_origin + '/',
             'description': 'VPN-сервис с автоматической маршрутизацией трафика. Подключение через сторонний клиент Happ.',
             'offers': {'@type': 'Offer', 'price': '149', 'priceCurrency': 'RUB',
-                       'url': 'https://lk.flowpass.online/buy/get',
+                       'url': checkout_urls['30'],
                        'description': 'Доступ на 30 дней. Финальные условия — в личном кабинете.'},
         }]
         if path:

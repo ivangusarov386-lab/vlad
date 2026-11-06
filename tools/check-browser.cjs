@@ -42,6 +42,30 @@ const server = http.createServer((req, res) => {
           assert.equal(response.status(),200);
           assert.equal(await page.locator('h1').count(),1);
           assert(await page.locator('h1').isVisible());
+          assert((await page.locator('.hero-buttons .btn-dark').innerText()).includes('3 дня бесплатно'));
+          assert.equal(await page.locator('.hero-buttons .btn-dark').getAttribute('href'),'https://lk.flowpass.online/login');
+          const choosePlan=page.locator('.hero-buttons .btn-outline');
+          assert((await choosePlan.innerText()).includes('Выбрать тариф'));
+          assert.equal(await choosePlan.getAttribute('href'),url ? base+'#paid-plans' : '#paid-plans');
+          if (url === '') {
+            await choosePlan.click();
+            assert.equal(new URL(page.url()).hash,'#paid-plans');
+            const pricingTop=await page.locator('#paid-plans').boundingBox();
+            const headerBottom=await page.locator('.navbar').boundingBox();
+            assert(pricingTop.y >= headerBottom.height-1,'Pricing hidden behind header');
+            assert(await page.locator('.trial-card').isVisible());
+            assert.equal(await page.locator('.trial-card .trial-terms li').count(),3);
+            assert.equal(await page.locator('.trial-card a').getAttribute('href'),'https://lk.flowpass.online/login');
+            const trialBox=await page.locator('.trial-card').boundingBox();
+            const gridBox=await page.locator('.price-grid').boundingBox();
+            assert(trialBox.y+trialBox.height<=gridBox.y,'Trial panel must be above paid plans');
+            const labels=['30 дней за 149 ₽','90 дней за 399 ₽','180 дней за 699 ₽','365 дней за 1 199 ₽'];
+            for(let i=0;i<labels.length;i++) {
+              const link=page.locator('.price-card .plan-buy').nth(i);
+              assert((await link.innerText()).replace(/\s+/g,' ').startsWith(labels[i]));
+              assert.equal(await link.getAttribute('href'),'https://lk.flowpass.online/buy/get');
+            }
+          }
           assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),`Overflow at ${url} ${width}`);
           for (const fraction of [0.5,1]) {
             await page.evaluate(fraction=>window.scrollTo({top:document.documentElement.scrollHeight*fraction,behavior:'instant'}),fraction);
@@ -133,6 +157,9 @@ const server = http.createServer((req, res) => {
     assert(await annual.evaluate(e=>e.getAnimations({subtree:true}).some(a=>a.animationName==='annualPlanPulse')));
     assert.equal(await annual.evaluate(e=>getComputedStyle(e,'::after').animationName),'annualPlanShimmer');
     await p.screenshot({path:'/tmp/flowpass-demo1-pricing.png'});
+    await p.emulateMedia({reducedMotion:'reduce'});
+    await p.goto(origin+base+'#tariffs');
+    await p.screenshot({path:'/tmp/flowpass-demo2-choice-mobile.png'});
     await p.goto(origin+base+'vpn/iphone/');
     await p.screenshot({path:'/tmp/flowpass-demo1-iphone.png',fullPage:true});
     await p.goto(origin+base+'smart-routing/');

@@ -32,3 +32,20 @@
 @media(max-width:760px){.seo-hero{padding:42px 0 50px}.seo-section{padding-top:42px;padding-bottom:42px}.seo-steps>li{padding:21px 18px}.seo-related{grid-template-columns:1fr}.seo-section p,.seo-section li{font-size:14px}.breadcrumbs{font-size:11px}.seo-hero .hero-buttons .btn{width:100%}.guide-links{font-size:12px}.seo-page .route-scene{margin-bottom:45px}}
 
 .hero-summary>p{margin:0}.hero-summary ul{margin:10px 0 14px;padding-left:20px}.hero-summary li+li{margin-top:7px}.hero-summary li::marker{color:#8daacb}
+
+.hero-help{margin:18px 0 0;font-size:12px;line-height:1.7;color:#a9bed6}
+.hero-help a{text-decoration:underline;text-decoration-color:#7496ba66;text-underline-offset:4px}
+.hero-help a:hover{color:#dceaff}
+.trial-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:32px;padding:28px;margin-bottom:18px;border:1px solid #658eb96b;border-radius:18px;background:linear-gradient(130deg,#1a344f,#14273d 70%)}
+.trial-card h3{margin:10px 0;font-size:28px;color:#edf5ff}
+.trial-card p{max-width:650px;margin:0;color:#b2c5db;font-size:13px;line-height:1.8}
+.trial-terms{display:flex;flex-wrap:wrap;gap:8px 22px;margin:18px 0 0;padding-left:17px;color:#c1d4e9;font-size:12px;line-height:1.6}
+.trial-terms li::marker{color:#8eafd2}
+.trial-choice{display:grid;justify-items:center;gap:4px;min-width:205px}
+.trial-price{font-size:38px;line-height:1.2;letter-spacing:-.05em;font-weight:800;color:#f0f6ff}.trial-price small{font-size:22px}
+.trial-caption{font-size:11px;line-height:1.6;color:#a6bbd4}
+.trial-choice .btn{margin-top:12px;width:100%;min-height:48px;font-size:12px;padding:12px 16px;gap:10px}
+.price-card .plan-buy{gap:8px;min-height:54px;line-height:1.5}
+.plan-buy>span:first-child{min-width:0}.plan-buy .arrow{flex-shrink:0}
+.cta-actions{display:grid;gap:10px;min-width:215px}.cta-box .cta-actions .btn{width:100%;margin:0;gap:10px}
+@media(max-width:760px){.trial-card{grid-template-columns:1fr;gap:22px;padding:23px 20px}.trial-card h3{font-size:26px}.trial-choice{min-width:0;justify-items:start}.trial-choice .btn{width:100%}.cta-actions{margin-top:24px;min-width:0}.price-card .plan-buy{font-size:11px}}
