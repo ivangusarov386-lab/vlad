@@ -43,7 +43,14 @@ const server = http.createServer((req, res) => {
           assert.equal(await page.locator('h1').count(),1);
           assert(await page.locator('h1').isVisible());
           assert((await page.locator('.hero-buttons .btn-dark').innerText()).includes('3 дня бесплатно'));
-          assert.equal(await page.locator('.hero-buttons .btn-dark').getAttribute('href'),'https://lk.flowpass.online/login');
+          assert.equal(await page.locator('.hero-buttons .btn-dark').getAttribute('href'),url ? base+'#tariffs' : '#tariffs');
+          if (url === '') {
+            await page.locator('.hero-buttons .btn-dark').click();
+            assert.equal(new URL(page.url()).hash,'#tariffs');
+            const section=await page.locator('#tariffs').boundingBox();
+            const bar=await page.locator('.navbar').boundingBox();
+            assert(section.y>=bar.height-1,'Access choice hidden behind header');
+          }
           const choosePlan=page.locator('.hero-buttons .btn-outline');
           assert((await choosePlan.innerText()).includes('Выбрать тариф'));
           assert.equal(await choosePlan.getAttribute('href'),url ? base+'#paid-plans' : '#paid-plans');
@@ -147,7 +154,7 @@ const server = http.createServer((req, res) => {
     await sampleFill(3500);
     const secondFrame = await trial.screenshot({path:'/tmp/flowpass-trial-fill.png'});
     assert(!firstFrame.equals(secondFrame),'Trial fill does not change');
-    assert.equal(await trial.getAttribute('href'),'https://lk.flowpass.online/login');
+    assert.equal(await trial.getAttribute('href'),'#tariffs');
     assert(await trial.evaluate(e=>{const r=e.getBoundingClientRect();return document.elementFromPoint(r.x+r.width/2,r.y+r.height/2).closest('a')===e;}));
     await p.locator('[data-device="android"]').click();
     await p.locator('#steps-list').screenshot({path:'/tmp/flowpass-android-steps.png'});
