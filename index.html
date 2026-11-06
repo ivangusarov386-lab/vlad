@@ -205,6 +205,14 @@ h1{color:#f5f8fe;letter-spacing:-.065em}.hero h1 em{color:#9ac3f7;text-shadow:0 
  .benefitgrid .benefit{animation:none!important;opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
 }
 
+/* A slow, subtle pulse highlights the annual plan without moving its content. */
+@keyframes annualPlanPulse{
+  0%,100%{border-color:#80b7ee;box-shadow:0 19px 65px #0e376477,0 0 32px #437fbd20}
+  50%{border-color:#9ac6f1;box-shadow:0 19px 65px #0e376477,0 0 44px #437fbd40}
+}
+@media(prefers-reduced-motion:no-preference){
+  .price-card.featured{animation:annualPlanPulse 4.5s ease-in-out infinite}
+}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Flowpass VPN","applicationCategory":"UtilitiesApplication","operatingSystem":"iOS, Android, Windows, macOS","offers":{"@type":"Offer","price":"149","priceCurrency":"RUB"},"description":"VPN-сервис с автоматической маршрутизацией трафика."}</script>
 </head>
