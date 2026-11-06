@@ -43,6 +43,12 @@ const server = http.createServer((req, res) => {
           assert.equal(await page.locator('h1').count(),1);
           assert(await page.locator('h1').isVisible());
           assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),`Overflow at ${url} ${width}`);
+          for (const fraction of [0.5,1]) {
+            await page.evaluate(fraction=>window.scrollTo({top:document.documentElement.scrollHeight*fraction,behavior:'instant'}),fraction);
+            const header = await page.locator('.navbar').boundingBox();
+            assert(Math.abs(header.y)<1,`Header left viewport at ${url} ${width}`);
+            assert(await page.locator('.navbar').evaluate(e=>{const r=e.getBoundingClientRect();return document.elementFromPoint(r.x+45,r.y+r.height/2).closest('.navbar')===e;}),'Header covered by content');
+          }
           if (javaScriptEnabled && width === 390) {
             await page.locator('#menu').click();
             assert.equal(await page.locator('#menu').getAttribute('aria-expanded'),'true');
