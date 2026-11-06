@@ -109,7 +109,7 @@ h1{color:#f5f8fe;letter-spacing:-.065em}.hero h1 em{color:#9ac3f7;text-shadow:0 
 .btn-dark{background:linear-gradient(120deg,#8db9ed,#b0d0f3);color:#102640;box-shadow:0 8px 34px #6aafe03d}
 .btn-dark:hover{background:linear-gradient(120deg,#b3d4f9,#d4e7ff);color:#0c1b2e;box-shadow:0 10px 48px #79b9ef4d}
 /* Keep the hero accent colors; soften only the call-to-action halo. */
-.hero-buttons .btn-dark{box-shadow:0 6px 24px #6aafe01c}
+.hero-buttons .btn-dark{position:relative;box-shadow:0 6px 24px #6aafe01c}
 .hero-buttons .btn-dark:hover{box-shadow:0 8px 30px #79b9ef26}
 .btn-outline{background:#ffffff08;border:1px solid #7697bd66;color:#e9f3ff;backdrop-filter:blur(8px)}
 .btn-outline:hover{background:#a3c3ee1c;border-color:#a6ccf1a3}
@@ -210,7 +210,7 @@ h1{color:#f5f8fe;letter-spacing:-.065em}.hero h1 em{color:#9ac3f7;text-shadow:0 
 @media(prefers-reduced-motion:no-preference){
   .price-card.featured{animation:annualPlanPulse 4s ease-in-out infinite}
   @supports ((mask-composite:exclude) or (-webkit-mask-composite:xor)){
-    .price-card.featured:after{
+    .price-card.featured:after,.hero-buttons .btn-dark:after{
       content:"";position:absolute;inset:-1px;padding:2px;border-radius:inherit;pointer-events:none;
       background:linear-gradient(120deg,#72a2d633 20%,#c5e7ff 35%,#8dbfff 43%,#72a2d633 60%);
       background-size:300% 300%;
